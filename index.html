@@ -1,0 +1,341 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#1d2f6f">
+<title>Classe Register</title>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--navy:#1d2f6f;--navy2:#2c45a0;--red:#d6334a;--cream:#faf7f2;--card:#fff;--ink:#1c1d24;--mute:#6b6f7e;--line:#e8e3da;--green:#1f8a5b;--amber:#c27a12;--chip:#eef1fb}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+body{margin:0;font-family:Inter,system-ui,sans-serif;background:var(--cream);color:var(--ink);font-size:15px;padding-bottom:84px}
+h1,h2,h3{font-family:Fraunces,Georgia,serif;margin:0}
+header{background:var(--navy);color:#fff;padding:18px 16px 16px;position:sticky;top:0;z-index:5}
+header .row{display:flex;align-items:center;justify-content:space-between;gap:10px}
+header h1{font-size:22px;letter-spacing:.2px}
+header small{opacity:.75;font-size:12px}
+.flag{display:inline-block;width:18px;height:12px;border-radius:2px;background:linear-gradient(90deg,#2c45a0 33%,#fff 33% 66%,#d6334a 66%);vertical-align:middle;margin-right:6px}
+.sync{font-size:11px;padding:4px 8px;border-radius:20px;background:rgba(255,255,255,.15);white-space:nowrap}
+.sync.off{background:#f6c344;color:#3b2c00}
+.iconbtn{background:rgba(255,255,255,.15);border:0;color:#fff;width:36px;height:36px;border-radius:10px;font-size:18px}
+main{padding:14px 16px;max-width:720px;margin:0 auto}
+.cards{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px}
+.stat{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:12px}
+.stat b{display:block;font-size:20px;font-family:Fraunces,serif}
+.stat span{font-size:12px;color:var(--mute)}
+.stat.due b{color:var(--red)}
+.panel{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:14px;margin-bottom:14px}
+.panel h2{font-size:18px;margin-bottom:10px}
+.muted{color:var(--mute);font-size:13px}
+label{display:block;font-size:12px;font-weight:600;color:var(--mute);margin:10px 0 4px}
+input,select,textarea{width:100%;padding:11px 12px;border:1px solid var(--line);border-radius:10px;font:inherit;background:#fff;color:var(--ink)}
+input:focus,select:focus,textarea:focus{outline:2px solid var(--navy2);border-color:transparent}
+.btn{border:0;border-radius:12px;padding:12px 16px;font:600 15px Inter,sans-serif;background:var(--navy);color:#fff;width:100%;cursor:pointer}
+.btn.red{background:var(--red)}.btn.green{background:#25a35a}.btn.ghost{background:var(--chip);color:var(--navy)}
+.btn.sm{width:auto;padding:8px 12px;font-size:13px;border-radius:10px}
+.btn:disabled{opacity:.45}
+.chips{display:flex;gap:6px;flex-wrap:wrap}
+.chip{border:1px solid var(--line);background:#fff;border-radius:20px;padding:7px 12px;font:600 13px Inter,sans-serif;color:var(--ink);cursor:pointer}
+.chip.on{background:var(--navy);border-color:var(--navy);color:#fff}
+.stu{display:flex;align-items:center;gap:12px;padding:12px;border:1px solid var(--line);border-radius:14px;margin-bottom:8px;background:#fff;cursor:pointer}
+.stu.on{border-color:var(--navy2);background:#f3f5fd}
+.av{width:38px;height:38px;border-radius:50%;background:var(--chip);color:var(--navy);display:grid;place-items:center;font-weight:700;flex:none}
+.stu.on .av{background:var(--navy);color:#fff}
+.grow{flex:1;min-width:0}
+.name{font-weight:600}
+.sub{font-size:12px;color:var(--mute)}
+.bal{font-weight:700;font-size:14px;white-space:nowrap}
+.bal.due{color:var(--red)}.bal.ok{color:var(--green)}.bal.adv{color:var(--amber)}
+.attopts{margin-top:8px}
+.tag{font-size:11px;background:#fff3d6;color:#8a5a00;padding:2px 7px;border-radius:10px;margin-left:6px}
+.row2{display:flex;gap:8px}.row2>*{flex:1}
+.list .item{display:flex;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid var(--line)}
+.list .item:last-child{border-bottom:0}
+.x{background:none;border:0;color:var(--mute);font-size:18px;padding:4px 8px;cursor:pointer}
+.wa{background:#25d366;color:#fff;border:0;border-radius:10px;padding:8px 10px;font:600 13px Inter,sans-serif;white-space:nowrap;cursor:pointer}
+nav{position:fixed;bottom:0;left:0;right:0;background:#fff;border-top:1px solid var(--line);display:flex;padding:6px 6px calc(6px + env(safe-area-inset-bottom));z-index:6}
+nav button{flex:1;border:0;background:none;padding:6px 0;font:600 11px Inter,sans-serif;color:var(--mute);display:flex;flex-direction:column;align-items:center;gap:2px}
+nav button i{font-style:normal;font-size:20px}
+nav button.on{color:var(--navy)}
+.fab{position:fixed;right:16px;bottom:84px;width:54px;height:54px;border-radius:50%;background:var(--red);color:#fff;border:0;font-size:28px;box-shadow:0 6px 18px rgba(214,51,74,.35);z-index:6}
+.ov{position:fixed;inset:0;background:rgba(20,22,35,.45);display:none;align-items:flex-end;justify-content:center;z-index:20}
+.ov.show{display:flex}
+.sheet{background:var(--cream);width:100%;max-width:560px;max-height:92vh;overflow:auto;border-radius:20px 20px 0 0;padding:18px 16px calc(20px + env(safe-area-inset-bottom))}
+.sheet .top{display:flex;justify-content:space-between;align-items:center;margin-bottom:6px}
+.sheet h3{font-size:20px}
+.mini{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:12px 0}
+.mini div{background:#fff;border:1px solid var(--line);border-radius:12px;padding:10px;text-align:center}
+.mini b{display:block;font-family:Fraunces,serif;font-size:17px}
+.mini span{font-size:11px;color:var(--mute)}
+.btnrow{display:flex;gap:8px;flex-wrap:wrap;margin:10px 0}
+.btnrow .btn{flex:1;min-width:120px}
+.empty{text-align:center;color:var(--mute);padding:24px 10px;font-size:14px}
+.toast{position:fixed;left:50%;bottom:150px;transform:translateX(-50%);background:var(--ink);color:#fff;padding:10px 16px;border-radius:12px;font-size:14px;opacity:0;transition:.25s;pointer-events:none;z-index:30;max-width:90%}
+.toast.show{opacity:1}
+.savebar{position:sticky;bottom:76px;margin-top:10px}
+.pill{font-size:11px;padding:2px 8px;border-radius:10px;background:var(--chip);color:var(--navy);font-weight:600}
+.pill.pay{background:#e3f5ec;color:var(--green)}
+</style>
+</head>
+<body>
+<header>
+  <div class="row">
+    <div>
+      <h1><span class="flag"></span>Classe Register</h1>
+      <small id="hdrSub">French classes · Gurbani Kaur</small>
+    </div>
+    <div style="display:flex;gap:8px;align-items:center">
+      <span class="sync" id="sync">Local</span>
+      <button class="iconbtn" onclick="openSettings()" aria-label="Settings">⚙</button>
+    </div>
+  </div>
+</header>
+
+<main id="view"></main>
+<button class="fab" id="fab" onclick="fabAction()">+</button>
+
+<nav>
+  <button data-t="today" class="on" onclick="go('today')"><i>✓</i>Attendance</button>
+  <button data-t="students" onclick="go('students')"><i>👥</i>Students</button>
+  <button data-t="payments" onclick="go('payments')"><i>₹</i>Payments</button>
+  <button data-t="dues" onclick="go('dues')"><i>🔔</i>Dues</button>
+</nav>
+
+<div class="ov" id="ov" onclick="if(event.target===this)closeModal()"><div class="sheet" id="sheet"></div></div>
+<div class="toast" id="toast"></div>
+<input type="file" id="importFile" accept=".json" style="display:none" onchange="importJSON(this)">
+
+<script>
+/* ---------- storage ---------- */
+const LS={get(k,d){try{const v=localStorage.getItem(k);return v?JSON.parse(v):d}catch(e){return d}},set(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}}};
+const DEF_SETTINGS={teacher:'Gurbani Kaur',youtube:'https://youtube.com/@frenchclasseswithgurbanikaur',upi:'',projectId:'propdesk-f50e0',apiKey:'',cloud:true,defHours:1};
+let S=Object.assign({},DEF_SETTINGS,LS.get('fc_settings',{}));
+let DB=LS.get('fc_db',{students:[],classes:[],payments:[]});
+let QUEUE=LS.get('fc_queue',[]);
+const COLL={students:'fc_students',classes:'fc_classes',payments:'fc_payments'};
+function saveLocal(){LS.set('fc_db',DB);LS.set('fc_queue',QUEUE)}
+
+/* ---------- Firestore REST ---------- */
+const base=()=>`https://firestore.googleapis.com/v1/projects/${S.projectId}/databases/(default)/documents`;
+const key=(pre)=>S.apiKey?`${pre}key=${encodeURIComponent(S.apiKey)}`:'';
+function toFields(o){const f={};for(const[k,v]of Object.entries(o)){if(k==='id'||v===null||v===undefined)continue;
+  if(typeof v==='number')f[k]={doubleValue:v};else if(typeof v==='boolean')f[k]={booleanValue:v};else f[k]={stringValue:String(v)}}return f}
+function fromFields(f){const o={};for(const[k,v]of Object.entries(f||{})){
+  if('doubleValue'in v)o[k]=v.doubleValue;else if('integerValue'in v)o[k]=Number(v.integerValue);
+  else if('booleanValue'in v)o[k]=v.booleanValue;else if('stringValue'in v)o[k]=v.stringValue}return o}
+async function fsList(coll){let out=[],tok='';do{
+  const r=await fetch(`${base()}/${coll}?pageSize=300${tok?'&pageToken='+encodeURIComponent(tok):''}${key('&')}`);
+  if(!r.ok)throw new Error(r.status);const j=await r.json();
+  (j.documents||[]).forEach(d=>{const o=fromFields(d.fields);o.id=d.name.split('/').pop();out.push(o)});tok=j.nextPageToken||''}while(tok);return out}
+async function fsSet(coll,id,data){const r=await fetch(`${base()}/${coll}/${id}${key('?')}`,{method:'PATCH',headers:{'Content-Type':'application/json'},body:JSON.stringify({fields:toFields(data)})});if(!r.ok)throw new Error(r.status)}
+async function fsDel(coll,id){const r=await fetch(`${base()}/${coll}/${id}${key('?')}`,{method:'DELETE'});if(!r.ok&&r.status!==404)throw new Error(r.status)}
+
+let flushing=false;
+function setSync(st){const el=document.getElementById('sync');
+  if(!S.cloud){el.textContent='This device';el.className='sync';return}
+  el.textContent=st==='on'?'☁ Synced':st==='busy'?'Syncing…':`Offline${QUEUE.length?' · '+QUEUE.length+' pending':''}`;el.className='sync'+(st==='off'?' off':'')}
+async function flush(){if(!S.cloud)return false;if(flushing)return true;flushing=true;setSync('busy');
+  try{while(QUEUE.length){const op=QUEUE[0];
+    if(op.op==='set')await fsSet(COLL[op.kind],op.id,op.data);else await fsDel(COLL[op.kind],op.id);
+    QUEUE.shift();saveLocal()}setSync('on');return true}
+  catch(e){setSync('off');return false}finally{flushing=false}}
+async function pull(){if(!S.cloud){setSync();return}
+  if(!(await flush()))return;
+  try{const[s,c,p]=await Promise.all([fsList(COLL.students),fsList(COLL.classes),fsList(COLL.payments)]);
+    if(QUEUE.length)return; DB={students:s,classes:c,payments:p};saveLocal();setSync('on');render()}catch(e){setSync('off')}}
+function put(kind,obj){const a=DB[kind],i=a.findIndex(x=>x.id===obj.id);if(i>=0)a[i]=obj;else a.push(obj);
+  if(S.cloud)QUEUE.push({op:'set',kind,id:obj.id,data:obj});saveLocal();flush()}
+function del(kind,id){DB[kind]=DB[kind].filter(x=>x.id!==id);if(S.cloud)QUEUE.push({op:'del',kind,id});saveLocal();flush()}
+window.addEventListener('online',()=>flush());
+
+/* ---------- helpers ---------- */
+const uid=()=>Date.now().toString(36)+Math.random().toString(36).slice(2,7);
+const today=()=>new Date().toLocaleDateString('en-CA');
+const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const rs=n=>'₹'+Math.round(Number(n)||0).toLocaleString('en-IN');
+const fd=d=>new Date(d+'T00:00').toLocaleDateString('en-IN',{day:'numeric',month:'short'});
+const fdy=d=>new Date(d+'T00:00').toLocaleDateString('en-IN',{day:'numeric',month:'short',year:'numeric'});
+const hrs=h=>(+h%1?(+h).toFixed(+h*4%2?2:1):+h)+' hr';
+const sum=(a,k)=>a.reduce((t,x)=>t+(Number(x[k])||0),0);
+const initials=n=>(n||'?').trim().split(/\s+/).map(w=>w[0]).slice(0,2).join('').toUpperCase();
+const stuById=id=>DB.students.find(s=>s.id===id);
+function stats(sid){const s=stuById(sid)||{};const cl=DB.classes.filter(c=>c.studentId===sid).sort((a,b)=>b.date.localeCompare(a.date));
+  const pa=DB.payments.filter(p=>p.studentId===sid).sort((a,b)=>b.date.localeCompare(a.date));
+  const billed=sum(cl,'amount')+(Number(s.opening)||0),paid=sum(pa,'amount');return{n:cl.length,hours:sum(cl,'hours'),billed,paid,bal:billed-paid,cl,pa}}
+function balHtml(b){return b>0.5?`<span class="bal due">${rs(b)} due</span>`:b<-0.5?`<span class="bal adv">${rs(-b)} advance</span>`:`<span class="bal ok">Settled</span>`}
+function toast(m){const t=document.getElementById('toast');t.textContent=m;t.classList.add('show');clearTimeout(t._t);t._t=setTimeout(()=>t.classList.remove('show'),2200)}
+function openModal(h){document.getElementById('sheet').innerHTML=h;document.getElementById('ov').classList.add('show')}
+function closeModal(){document.getElementById('ov').classList.remove('show')}
+const activeStudents=()=>DB.students.filter(s=>s.active!==false).sort((a,b)=>a.name.localeCompare(b.name));
+
+/* ---------- WhatsApp ---------- */
+function phoneFor(s){let p=String(s.phone||'').replace(/\D/g,'');if(p.length===10)p='91'+p;if(p.length===11&&p[0]==='0')p='91'+p.slice(1);return p}
+function sendWA(s,msg){const p=phoneFor(s);window.open(`https://wa.me/${p}?text=${encodeURIComponent(msg)}`,'_blank')}
+function reminderMsg(sid){const s=stuById(sid),st=stats(sid);const who=s.parent||s.name;
+  const mon=today().slice(0,7);const mcl=st.cl.filter(c=>c.date.startsWith(mon)).sort((a,b)=>a.date.localeCompare(b.date));
+  let m=`Bonjour ${who}! 🇫🇷\n\nFee update for *${s.name}* — French classes with ${S.teacher}\n\n`;
+  if(mcl.length){m+=`*This month's classes:*\n`+mcl.map(c=>`• ${fd(c.date)} – ${hrs(c.hours)} – ${rs(c.amount)}`).join('\n')+'\n\n'}
+  m+=`Total classes: ${st.n} (${hrs(st.hours)})\nTotal fee: ${rs(st.billed)}\nReceived: ${rs(st.paid)}\n`;
+  if(st.bal>0.5)m+=`*Balance due: ${rs(st.bal)}*\n\nKindly clear the balance at your convenience.`+(S.upi?`\nUPI: ${S.upi}`:'');
+  else if(st.bal<-0.5)m+=`*Advance with us: ${rs(-st.bal)}*\n\nThank you!`;else m+=`*All fees settled* ✅\n\nThank you!`;
+  m+=`\n\nMerci beaucoup! 🙏\n— ${S.teacher}`+(S.youtube?`\n\n📺 Free French lessons on YouTube:\n${S.youtube}`:'');return m}
+function receiptMsg(pid){const p=DB.payments.find(x=>x.id===pid),s=stuById(p.studentId),st=stats(p.studentId);
+  return `Bonjour ${s.parent||s.name}! 🇫🇷\n\nReceived ${rs(p.amount)} on ${fdy(p.date)} (${p.mode}) for *${s.name}*'s French classes. Merci! 🙏\n\n`+
+  (st.bal>0.5?`Remaining balance: ${rs(st.bal)}`:st.bal<-0.5?`Advance with us: ${rs(-st.bal)}`:`All fees settled ✅`)+`\n\n— ${S.teacher}`}
+
+/* ---------- views ---------- */
+let TAB='today',attDate=today(),att={},defH=S.defHours||1;
+function go(t){TAB=t;document.querySelectorAll('nav button').forEach(b=>b.classList.toggle('on',b.dataset.t===t));
+  document.getElementById('fab').style.display=t==='dues'?'none':'block';render();window.scrollTo(0,0)}
+function fabAction(){if(TAB==='payments')paymentForm();else studentForm()}
+function render(){const v=document.getElementById('view');
+  v.innerHTML=TAB==='today'?vToday():TAB==='students'?vStudents():TAB==='payments'?vPayments():vDues()}
+
+function summaryCards(){const mon=today().slice(0,7);const mc=DB.classes.filter(c=>c.date.startsWith(mon));
+  const mp=DB.payments.filter(p=>p.date.startsWith(mon));
+  const due=DB.students.reduce((t,s)=>{const b=stats(s.id).bal;return t+(b>0?b:0)},0);
+  return `<div class="cards">
+   <div class="stat"><b>${mc.length}</b><span>Classes this month · ${hrs(sum(mc,'hours'))}</span></div>
+   <div class="stat"><b>${rs(sum(mc,'amount'))}</b><span>Fees earned this month</span></div>
+   <div class="stat"><b>${rs(sum(mp,'amount'))}</b><span>Received this month</span></div>
+   <div class="stat due"><b>${rs(due)}</b><span>Total pending</span></div></div>`}
+
+function vToday(){const studs=activeStudents();
+  if(!studs.length)return summaryCards()+`<div class="panel empty">No students yet.<br><br><button class="btn sm" onclick="studentForm()">+ Add first student</button></div>`;
+  const done=DB.classes.filter(c=>c.date===attDate);
+  const doneIds=new Set(done.map(c=>c.studentId));
+  const sel=Object.entries(att);const tot=sel.reduce((t,[id,h])=>t+h*(Number(stuById(id)?.rate)||0),0);
+  return summaryCards()+`<div class="panel"><h2>Mark attendance</h2>
+   <div class="row2"><div><label>Date</label><input type="date" value="${attDate}" onchange="attDate=this.value;att={};render()"></div></div>
+   <label>Default duration</label><div class="chips">${[1,1.5,2].map(h=>`<button class="chip ${defH===h?'on':''}" onclick="defH=${h};render()">${hrs(h)}</button>`).join('')}
+   <button class="chip ${[1,1.5,2].includes(defH)?'':'on'}" onclick="customDef()">${[1,1.5,2].includes(defH)?'Other':hrs(defH)}</button></div>
+   <p class="muted" style="margin:12px 0 8px">Tap students who attended:</p>
+   ${studs.map(s=>{const on=att[s.id]!=null,h=att[s.id];return `<div class="stu ${on?'on':''}" onclick="togAtt('${s.id}')">
+     <div class="av">${on?'✓':esc(initials(s.name))}</div>
+     <div class="grow"><div class="name">${esc(s.name)}${doneIds.has(s.id)?'<span class="tag">already marked</span>':''}</div>
+     <div class="sub">${rs(s.rate)}/hr${on?` · <b style="color:var(--navy)">${hrs(h)} = ${rs(h*(+s.rate||0))}</b>`:''}</div>
+     ${on?`<div class="attopts chips" onclick="event.stopPropagation()">${[1,1.5,2].map(x=>`<button class="chip ${h===x?'on':''}" onclick="setAtt('${s.id}',${x})">${hrs(x)}</button>`).join('')}
+       <button class="chip ${[1,1.5,2].includes(h)?'':'on'}" onclick="customAtt('${s.id}')">${[1,1.5,2].includes(h)?'Other':hrs(h)}</button></div>`:''}
+     </div></div>`}).join('')}
+   <div class="savebar"><button class="btn red" ${sel.length?'':'disabled'} onclick="saveAtt()">Save ${sel.length||''} class${sel.length===1?'':'es'}${sel.length?' · '+rs(tot):''}</button></div></div>
+   <div class="panel"><h2>Classes on ${fdy(attDate)}</h2>${done.length?`<div class="list">${done.map(c=>{const s=stuById(c.studentId);return `<div class="item">
+     <div class="grow"><div class="name">${esc(s?.name||'Deleted student')}</div><div class="sub">${hrs(c.hours)} × ${rs(c.rate)} = ${rs(c.amount)}</div></div>
+     <button class="x" onclick="delClass('${c.id}')">✕</button></div>`}).join('')}</div>`:`<div class="muted">Nothing marked for this date yet.</div>`}</div>`}
+function togAtt(id){if(att[id]!=null)delete att[id];else att[id]=defH;render()}
+function setAtt(id,h){att[id]=h;render()}
+function askHours(cur){const v=prompt('Class duration in hours (e.g. 0.75, 1.25, 2.5)',cur||'');if(v===null)return null;const n=parseFloat(v);if(!(n>0&&n<12)){toast('Enter hours like 1.25');return null}return n}
+function customDef(){const n=askHours(defH);if(n){defH=n;S.defHours=n;LS.set('fc_settings',S);render()}}
+function customAtt(id){const n=askHours(att[id]);if(n){att[id]=n;render()}}
+function saveAtt(){const ids=Object.keys(att);ids.forEach(id=>{const s=stuById(id);const rate=Number(s.rate)||0;
+  put('classes',{id:uid(),studentId:id,date:attDate,hours:att[id],rate,amount:Math.round(att[id]*rate*100)/100,createdAt:Date.now()})});
+  toast(`${ids.length} class${ids.length>1?'es':''} saved ✓`);att={};render()}
+function delClass(id){if(!confirm('Delete this class entry?'))return;del('classes',id);render();refreshDetail()}
+
+function vStudents(){const all=[...DB.students].sort((a,b)=>(a.active===false)-(b.active===false)||a.name.localeCompare(b.name));
+  if(!all.length)return `<div class="panel empty">No students yet. Tap + to add one.</div>`;
+  return `<input placeholder="Search students…" oninput="filterStu(this.value)" style="margin-bottom:10px"><div id="stuList">`+all.map(s=>{const st=stats(s.id);return `<div class="stu" data-n="${esc(s.name.toLowerCase())}" onclick="studentDetail('${s.id}')" ${s.active===false?'style="opacity:.55"':''}>
+   <div class="av">${esc(initials(s.name))}</div><div class="grow"><div class="name">${esc(s.name)}${s.active===false?' <span class="pill">inactive</span>':''}</div>
+   <div class="sub">${rs(s.rate)}/hr · ${st.n} classes · ${hrs(st.hours)}</div></div>${balHtml(st.bal)}</div>`}).join('')+'</div>'}
+function filterStu(q){q=q.toLowerCase();document.querySelectorAll('#stuList .stu').forEach(e=>e.style.display=e.dataset.n.includes(q)?'':'none')}
+
+function vPayments(){const ps=[...DB.payments].sort((a,b)=>b.date.localeCompare(a.date)||(b.createdAt||0)-(a.createdAt||0));
+  const mon=today().slice(0,7);
+  return `<div class="cards"><div class="stat"><b>${rs(sum(ps.filter(p=>p.date.startsWith(mon)),'amount'))}</b><span>Received this month</span></div>
+   <div class="stat"><b>${rs(sum(ps,'amount'))}</b><span>Received all time</span></div></div>
+   <button class="btn" onclick="paymentForm()" style="margin-bottom:14px">+ Record payment</button>
+   <div class="panel"><h2>Recent payments</h2>${ps.length?`<div class="list">${ps.slice(0,100).map(payRow).join('')}</div>`:'<div class="muted">No payments yet.</div>'}</div>`}
+function payRow(p){const s=stuById(p.studentId);return `<div class="item"><div class="grow"><div class="name">${esc(s?.name||'Deleted student')} <span class="pill pay">${esc(p.mode)}</span></div>
+  <div class="sub">${fdy(p.date)}${p.note?' · '+esc(p.note):''}</div></div><b>${rs(p.amount)}</b>
+  ${s?`<button class="wa" onclick="sendWA(stuById('${s.id}'),receiptMsg('${p.id}'))">Receipt</button>`:''}<button class="x" onclick="delPay('${p.id}')">✕</button></div>`}
+function delPay(id){if(!confirm('Delete this payment?'))return;del('payments',id);render();refreshDetail()}
+
+function vDues(){const rows=DB.students.map(s=>({s,st:stats(s.id)})).filter(r=>r.st.bal>0.5).sort((a,b)=>b.st.bal-a.st.bal);
+  const tot=sum(rows.map(r=>({b:r.st.bal})),'b');
+  return `<div class="cards"><div class="stat due"><b>${rs(tot)}</b><span>Total pending</span></div><div class="stat"><b>${rows.length}</b><span>Students with dues</span></div></div>
+   <div class="panel"><h2>Fee reminders</h2>${rows.length?`<div class="list">${rows.map(({s,st})=>`<div class="item">
+   <div class="av">${esc(initials(s.name))}</div><div class="grow" onclick="studentDetail('${s.id}')"><div class="name">${esc(s.name)}</div>
+   <div class="sub">Fee ${rs(st.billed)} · Paid ${rs(st.paid)}</div><span class="bal due">${rs(st.bal)} due</span></div>
+   <button class="wa" onclick="sendWA(stuById('${s.id}'),reminderMsg('${s.id}'))">WhatsApp</button></div>`).join('')}</div>`:'<div class="muted">🎉 Everyone is settled up.</div>'}</div>`}
+
+/* ---------- forms & detail ---------- */
+function studentForm(id){const s=id?stuById(id):{active:true};openModal(`<div class="top"><h3>${id?'Edit':'Add'} student</h3><button class="x" onclick="closeModal()">✕</button></div>
+  <label>Student name *</label><input id="f_name" value="${esc(s.name)}">
+  <label>Parent / contact name</label><input id="f_parent" value="${esc(s.parent)}" placeholder="Used in WhatsApp greeting">
+  <label>WhatsApp number</label><input id="f_phone" type="tel" value="${esc(s.phone)}" placeholder="98xxxxxxxx">
+  <div class="row2"><div><label>Hourly rate (₹) *</label><input id="f_rate" type="number" inputmode="decimal" value="${s.rate??''}"></div>
+  <div><label>Old balance (₹)</label><input id="f_open" type="number" inputmode="decimal" value="${s.opening??''}" placeholder="0"></div></div>
+  <label>Notes</label><textarea id="f_notes" rows="2" placeholder="Level, batch, school…">${esc(s.notes)}</textarea>
+  <label style="display:flex;align-items:center;gap:8px;color:var(--ink)"><input type="checkbox" id="f_active" style="width:auto" ${s.active!==false?'checked':''}> Active student</label>
+  <div style="margin-top:14px"><button class="btn" onclick="saveStudent('${id||''}')">Save</button></div>
+  ${id?`<div style="margin-top:10px"><button class="btn ghost" onclick="deleteStudent('${id}')" style="color:var(--red)">Delete student</button></div>`:''}`)}
+function saveStudent(id){const g=k=>document.getElementById('f_'+k).value.trim();const name=g('name'),rate=parseFloat(g('rate'));
+  if(!name)return toast('Enter a name');if(!(rate>=0))return toast('Enter hourly rate');
+  const old=id?stuById(id):{};const s={...old,id:id||uid(),name,parent:g('parent'),phone:g('phone'),rate,opening:parseFloat(g('open'))||0,notes:g('notes'),active:document.getElementById('f_active').checked,createdAt:old.createdAt||Date.now()};
+  put('students',s);toast(id?'Updated ✓':'Student added ✓');closeModal();render();if(id)studentDetail(id)}
+function deleteStudent(id){const st=stats(id);if(!confirm(`Delete ${stuById(id).name}? This also deletes ${st.n} classes and ${st.pa.length} payments.`))return;
+  st.cl.forEach(c=>del('classes',c.id));st.pa.forEach(p=>del('payments',p.id));del('students',id);closeModal();render();toast('Deleted')}
+
+function paymentForm(sid){const studs=activeStudents();if(!studs.length)return toast('Add a student first');
+  const pre=sid||studs[0].id;openModal(`<div class="top"><h3>Record payment</h3><button class="x" onclick="closeModal()">✕</button></div>
+  <label>Student</label><select id="p_stu" onchange="payHint()">${DB.students.map(s=>`<option value="${s.id}" ${s.id===pre?'selected':''}>${esc(s.name)}</option>`).join('')}</select>
+  <div class="muted" id="p_hint" style="margin-top:6px"></div>
+  <div class="row2"><div><label>Amount (₹)</label><input id="p_amt" type="number" inputmode="decimal"></div><div><label>Date</label><input id="p_date" type="date" value="${today()}"></div></div>
+  <label>Mode</label><div class="chips" id="p_modes">${['UPI','Cash','Bank','Other'].map((m,i)=>`<button class="chip ${i?'':'on'}" onclick="pickMode(this)">${m}</button>`).join('')}</div>
+  <label>Note</label><input id="p_note" placeholder="Optional">
+  <label style="display:flex;align-items:center;gap:8px;color:var(--ink);margin-top:14px"><input type="checkbox" id="p_wa" style="width:auto" checked> Send WhatsApp receipt after saving</label>
+  <div style="margin-top:14px"><button class="btn green" onclick="savePayment()">Save payment</button></div>`);payHint()}
+function pickMode(b){document.querySelectorAll('#p_modes .chip').forEach(c=>c.classList.remove('on'));b.classList.add('on')}
+function payHint(){const id=document.getElementById('p_stu').value,st=stats(id);document.getElementById('p_hint').innerHTML='Current: '+balHtml(st.bal);
+  if(st.bal>0)document.getElementById('p_amt').placeholder=Math.round(st.bal)}
+function savePayment(){const sid=document.getElementById('p_stu').value,amt=parseFloat(document.getElementById('p_amt').value);
+  if(!(amt>0))return toast('Enter amount');const p={id:uid(),studentId:sid,amount:amt,date:document.getElementById('p_date').value||today(),
+  mode:document.querySelector('#p_modes .chip.on').textContent,note:document.getElementById('p_note').value.trim(),createdAt:Date.now()};
+  put('payments',p);const wa=document.getElementById('p_wa').checked;closeModal();render();toast(`${rs(amt)} recorded ✓`);
+  if(wa)sendWA(stuById(sid),receiptMsg(p.id));refreshDetail()}
+
+let detailId=null;
+function refreshDetail(){if(detailId&&document.getElementById('ov').classList.contains('show')&&document.getElementById('detailMark'))studentDetail(detailId)}
+function studentDetail(id){detailId=id;const s=stuById(id),st=stats(id);
+  const led=[...st.cl.map(c=>({t:'c',d:c.date,o:c})),...st.pa.map(p=>({t:'p',d:p.date,o:p}))].sort((a,b)=>b.d.localeCompare(a.d));
+  openModal(`<span id="detailMark"></span><div class="top"><h3>${esc(s.name)}</h3><button class="x" onclick="closeModal();detailId=null">✕</button></div>
+  <div class="sub">${s.parent?esc(s.parent)+' · ':''}${esc(s.phone||'No number')} · ${rs(s.rate)}/hr</div>
+  <div class="mini"><div><b>${st.n}</b><span>Classes · ${hrs(st.hours)}</span></div><div><b>${rs(st.billed)}</b><span>Total fee</span></div><div><b>${rs(st.paid)}</b><span>Received</span></div></div>
+  <div class="panel" style="text-align:center;padding:12px">${balHtml(st.bal)}${s.opening?`<div class="muted" style="margin-top:4px">incl. old balance ${rs(s.opening)}</div>`:''}</div>
+  <div class="btnrow"><button class="btn green" onclick="paymentForm('${id}')">+ Payment</button><button class="btn" style="background:#25d366" onclick="sendWA(stuById('${id}'),reminderMsg('${id}'))">WhatsApp</button></div>
+  <div class="btnrow"><button class="btn ghost" onclick="studentForm('${id}')">Edit</button></div>
+  <div class="panel"><h2>History</h2>${led.length?`<div class="list">${led.map(e=>e.t==='c'?`<div class="item"><span class="pill">Class</span><div class="grow"><div>${fdy(e.d)}</div><div class="sub">${hrs(e.o.hours)} × ${rs(e.o.rate)}</div></div><b>${rs(e.o.amount)}</b><button class="x" onclick="delClass('${e.o.id}')">✕</button></div>`
+   :`<div class="item"><span class="pill pay">Paid</span><div class="grow"><div>${fdy(e.d)}</div><div class="sub">${esc(e.o.mode)}${e.o.note?' · '+esc(e.o.note):''}</div></div><b style="color:var(--green)">−${rs(e.o.amount)}</b><button class="x" onclick="delPay('${e.o.id}')">✕</button></div>`).join('')}</div>`:'<div class="muted">No classes or payments yet.</div>'}</div>`)}
+
+/* ---------- settings, backup ---------- */
+function openSettings(){openModal(`<div class="top"><h3>Settings</h3><button class="x" onclick="closeModal()">✕</button></div>
+  <label>Teacher name (in messages)</label><input id="s_teacher" value="${esc(S.teacher)}">
+  <label>YouTube channel link</label><input id="s_yt" value="${esc(S.youtube)}">
+  <label>UPI ID (shown in reminders)</label><input id="s_upi" value="${esc(S.upi)}" placeholder="name@okhdfc">
+  <label style="display:flex;align-items:center;gap:8px;color:var(--ink);margin-top:14px"><input type="checkbox" id="s_cloud" style="width:auto" ${S.cloud?'checked':''}> Cloud sync (Firebase)</label>
+  <div class="row2"><div><label>Firebase project ID</label><input id="s_pid" value="${esc(S.projectId)}"></div><div><label>Web API key</label><input id="s_key" value="${esc(S.apiKey)}" placeholder="AIza…"></div></div>
+  <div style="margin-top:14px"><button class="btn" onclick="saveSettings()">Save settings</button></div>
+  <div class="btnrow" style="margin-top:16px"><button class="btn ghost" onclick="exportCSV()">Export CSV</button><button class="btn ghost" onclick="exportJSON()">Backup</button><button class="btn ghost" onclick="document.getElementById('importFile').click()">Restore</button></div>
+  <p class="muted">Data is saved on this phone and synced to Firebase when online, so it shows the same on any device.</p>`)}
+function saveSettings(){const g=k=>document.getElementById('s_'+k).value.trim();
+  S={...S,teacher:g('teacher')||'Gurbani Kaur',youtube:g('yt'),upi:g('upi'),projectId:g('pid')||'propdesk-f50e0',apiKey:g('key'),cloud:document.getElementById('s_cloud').checked};
+  LS.set('fc_settings',S);closeModal();toast('Settings saved');
+  if(S.cloud){QUEUE=[];['students','classes','payments'].forEach(k=>DB[k].forEach(o=>QUEUE.push({op:'set',kind:k,id:o.id,data:o})));saveLocal();pull()}else setSync()}
+function dl(name,text,type){const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([text],{type}));a.download=name;a.click();setTimeout(()=>URL.revokeObjectURL(a.href),1000)}
+function exportJSON(){dl(`french-classes-backup-${today()}.json`,JSON.stringify(DB,null,1),'application/json')}
+function exportCSV(){const q=v=>`"${String(v??'').replace(/"/g,'""')}"`;const rows=[['Type','Date','Student','Hours','Rate','Amount','Mode','Note']];
+  DB.classes.forEach(c=>rows.push(['Class',c.date,stuById(c.studentId)?.name,c.hours,c.rate,c.amount,'','']));
+  DB.payments.forEach(p=>rows.push(['Payment',p.date,stuById(p.studentId)?.name,'','',p.amount,p.mode,p.note]));
+  rows.splice(1,rows.length-1,...rows.slice(1).sort((a,b)=>a[1].localeCompare(b[1])));
+  dl(`french-classes-${today()}.csv`,'\ufeff'+rows.map(r=>r.map(q).join(',')).join('\n'),'text/csv')}
+function importJSON(inp){const f=inp.files[0];if(!f)return;const r=new FileReader();r.onload=()=>{try{const d=JSON.parse(r.result);
+  if(!d.students||!d.classes||!d.payments)throw 0;if(!confirm('Replace all data with this backup?'))return;
+  DB={students:d.students,classes:d.classes,payments:d.payments};
+  if(S.cloud){QUEUE=[];['students','classes','payments'].forEach(k=>DB[k].forEach(o=>QUEUE.push({op:'set',kind:k,id:o.id,data:o})))}
+  saveLocal();flush();closeModal();render();toast('Backup restored ✓')}catch(e){toast('Not a valid backup file')}};r.readAsText(f);inp.value=''}
+
+/* ---------- boot ---------- */
+render();setSync(QUEUE.length?'off':'busy');pull();
+</script>
+</body>
+</html>
